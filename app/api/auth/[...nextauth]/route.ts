@@ -4,6 +4,9 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { NextApiHandler } from 'next';
 import NextAuth, { AuthOptions } from 'next-auth';
 import clientPromise from '@/lib/mongodb';
+import { signJwt } from '@/lib/jwt';
+import { JwtPayload } from '@/types/general';
+import { cookies } from 'next/headers';
 
 export const OPTIONS: AuthOptions = {
   providers: [
@@ -17,18 +20,27 @@ export const OPTIONS: AuthOptions = {
   session: {
     strategy: "jwt",
   },
-  callbacks: {
+  callbacks: { 
     async jwt({ token, user, account }) {
       if (user && account) {
-        token.accessToken = account.accessToken;
         token.id = user.id;
+        const jwt = await signJwt({
+          sub: token.sub,
+          expires_at: account.expires_at,
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+          },
+        } satisfies JwtPayload);
+        token.accessToken = jwt;
+        cookies().set('auth_token', jwt);
       }
       return token;
     },
     async session({ session, token, user }) {
-      console.log('session', session, token, user);
       session = { ...session, ...token, ...user };
-      console.log('updated session', session);
       return session
     },
   },

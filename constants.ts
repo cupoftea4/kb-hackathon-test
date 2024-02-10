@@ -1,7 +1,4 @@
 export const API_URL = "http://localhost:5005";
-// if (!process.env.NX_PRODUCT_ID) {
-//   throw new Error('Missing NX_PRODUCT_ID');
-// }
 
 if(!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRET) {
   throw new Error('Missing GOOGLE_OAUTH_CLIENT_ID or GOOGLE_OAUTH_CLIENT_SECRET');
@@ -10,8 +7,10 @@ if(!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRE
 export const CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID ;
 export const CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
 
-// if(!process.env.MONGODB_NAME) {
-//   throw new Error('Missing MONGODB_NAME');
-// }
+if (!process.env.JWT_SECRET) {
+  throw new Error('Missing JWT_SECRET');
+}
 
-// export const MONGODB_NAME = process.env.MONGODB_NAME;
+// It is important to match the secret on the server
+export const JWT_SECRET = process.env.JWT_SECRET;
+

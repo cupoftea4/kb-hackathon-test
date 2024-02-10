@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { cookies } from "next/headers";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -15,6 +16,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // Server side fetch example
+  fetch('http://localhost:5005/bid', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': cookies().toString() // Send cookies with jwt token
+      }
+    }).then(response => response.json()).then(json =>
+      console.log(json)
+    )
+  
   return (
     <html lang="en">
         <body className={cn(montserrat.className, "bg-background", "min-h-[100%]")}>
