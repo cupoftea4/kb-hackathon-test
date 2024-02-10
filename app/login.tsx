@@ -1,16 +1,10 @@
 import { Button } from "@/components/ui/button";
-import useOneTapSignin from "@/utils/useOneTapSignin";
 import { signOut, useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { useEffect } from "react";
 
 export default function Login() {
   const { data: session, status, update } = useSession();
-
-  const { isLoading: oneTapIsLoading } = useOneTapSignin({
-    redirect: false,
-    parentContainerId: 'oneTap',
-  });
 
   // Client side fetch example
   useEffect(() => {

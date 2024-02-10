@@ -3,6 +3,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { cookies } from "next/headers";
+import Script from "next/script";
+import GoogleOneTapWrapper from "@/components/GoogleOneTapWrapper";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -30,10 +32,14 @@ export default function RootLayout({
   
   return (
     <html lang="en">
-        <body className={cn(montserrat.className, "bg-background", "min-h-[100%]")}>
-          <div id="oneTap" style={{ position: 'absolute', top: '20px', right: '0' }} />
-          {children}
-        </body>
+      <Script
+        src="https://accounts.google.com/gsi/client"
+        strategy="afterInteractive"
+      />
+      <body className={cn(montserrat.className, "bg-background", "min-h-[100%]")}>
+        <GoogleOneTapWrapper />
+        {children}
+      </body>
     </html>
   );
 }

@@ -5,7 +5,7 @@ import { NextApiHandler } from 'next';
 import NextAuth, { AuthOptions } from 'next-auth';
 import clientPromise from '@/lib/mongodb';
 import { signJwt } from '@/lib/jwt';
-import { JwtPayload } from '@/types/general';
+import { JwtPayload } from '@/types/jwt';
 import { cookies } from 'next/headers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { OAuth2Client } from 'google-auth-library';

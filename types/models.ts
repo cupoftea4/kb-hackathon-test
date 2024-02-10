@@ -1,4 +1,3 @@
-
 type Bid = {
   id: string;
   amount: number;

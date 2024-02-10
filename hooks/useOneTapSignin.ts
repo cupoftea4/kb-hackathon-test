@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { useSession, signIn, SignInOptions } from 'next-auth/react';
 import { CLIENT_ID } from '@/constants';
