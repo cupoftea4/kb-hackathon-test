@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { SearchIcon } from 'lucide-react'
+import SearchIcon from '@/assets/SearchIcon'
 import { Input } from './ui/input'
 
 const HomeTop = () => {
