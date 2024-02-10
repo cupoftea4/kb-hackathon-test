@@ -15,9 +15,6 @@ export default function Home() {
       />
       <div className="max-w-screen-xl m-auto">
         <HomeTop />
-        <SessionProvider>
-          <Login />
-        </SessionProvider>
       </div>
     </main>
   );

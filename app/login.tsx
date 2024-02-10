@@ -26,9 +26,6 @@ export default function Login() {
   }, [])
   return (
     <>
-      {/** Google one tap */}
-      <div id="oneTap" style={{ position: 'absolute', top: '20px', right: '0' }} />
-      {/** Google button tap */}
       <div>
         <Button
           onClick={() => {

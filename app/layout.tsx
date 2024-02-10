@@ -18,19 +18,20 @@ export default function RootLayout({
 }>) {
 
   // Server side fetch example
-  fetch('http://localhost:5005/bid', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cookie': cookies().toString() // Send cookies with jwt token
-      }
-    }).then(response => response.json()).then(json =>
-      console.log(json)
-    )
+  fetch('http://localhost:5005/auction', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': cookies().toString() // Send cookies with jwt token
+    }
+  }).then(response => response.json()).then(json =>
+    console.log(json)
+  )
   
   return (
     <html lang="en">
         <body className={cn(montserrat.className, "bg-background", "min-h-[100%]")}>
+          <div id="oneTap" style={{ position: 'absolute', top: '20px', right: '0' }} />
           {children}
         </body>
     </html>

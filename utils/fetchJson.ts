@@ -1,5 +1,6 @@
 import { API_URL } from '@/constants';
 import { APIResponse } from '@/types/general';
+import { cookies } from 'next/headers';
 
 export async function fetchJson<T>(path: string, options?: RequestInit): Promise<T> {
   try {
@@ -8,7 +9,8 @@ export async function fetchJson<T>(path: string, options?: RequestInit): Promise
     options = {
       ...options,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cookie': cookies().toString()
       }
     };
     const response = await fetch(url, options);
