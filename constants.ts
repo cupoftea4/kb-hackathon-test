@@ -4,7 +4,7 @@ if(!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRE
   throw new Error('Missing GOOGLE_OAUTH_CLIENT_ID or GOOGLE_OAUTH_CLIENT_SECRET');
 }
 
-export const CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID ;
+export const CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID;
 export const CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
 
 if (!process.env.JWT_SECRET) {
@@ -13,4 +13,5 @@ if (!process.env.JWT_SECRET) {
 
 // It is important to match the secret on the server
 export const JWT_SECRET = process.env.JWT_SECRET;
+
 
