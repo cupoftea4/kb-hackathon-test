@@ -5,7 +5,7 @@ import { Input } from './ui/input'
 
 const HomeTop = () => {
   return (
-    <div className='flex p-5'>
+    <div className='flex p-5 gap-2'>
       <div className='flex-1 flex justify-center items-center'>
         <div className='w-fit flex items-center border-2 px-2 rounded-md'>
           <Input placeholder='Search' className='inline-block' />
