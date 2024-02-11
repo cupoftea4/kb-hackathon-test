@@ -1,8 +1,10 @@
 import { API_URL } from '@/constants';
 import { APIResponse } from '@/types/general';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function fetchJson<T>(path: string, options?: RequestInit): Promise<T> {
+  let statusCode: number = 0;
   try {
     const url = `${API_URL}/${path}`;
 
@@ -17,6 +19,7 @@ export async function fetchJson<T>(path: string, options?: RequestInit): Promise
 
     if (!response.ok) {
       let errorMessage = `Request failed with status: ${response.status}`;
+      statusCode = response.status;
 
       try {
         const errorData = await response.json() as APIResponse<T>;
@@ -33,6 +36,10 @@ export async function fetchJson<T>(path: string, options?: RequestInit): Promise
     const jsonData = await response.json() as T;
     return jsonData;
   } catch (error) {
+    if (statusCode === 403) {
+      console.error('User is not authenticated, redirecting to login page');
+      redirect('/login');
+    }
     throw new Error(`Error fetching JSON data: ${error}. URL: ${API_URL}/${path}`);
   }
 }
