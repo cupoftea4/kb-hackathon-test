@@ -17,7 +17,7 @@ import { format } from 'date-fns';
 import { Checkbox } from './ui/checkbox';
 import Image from 'next/image';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 
 async function uploadImage(file: File) {
@@ -54,16 +54,30 @@ const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | 
     url += `/${id}`;
   }
 
+  const requestBody = {
+    product: {
+      name: data.name,
+      description: data.description,
+      category: data.category,
+    },
+    minPrice: parseFloat(data.minPrice),
+    minBidStep: parseFloat(data.minBidStep),
+    currency: data.currency,
+    closeDate: data.closeDate,
+    charity: data.charity,
+  };
+
   const response = await fetch(url, {
     method,
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(requestBody),
   }).catch((error) => {
     console.error('Error:', error);
   });
+  return response;
 };
 
 
@@ -111,6 +125,8 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
 
   console.log(categories, auctionData, isEditing);
 
+  const router = useRouter();
+
   const pathname = usePathname();
   const id = pathname!.split('/')[2];
 
@@ -140,8 +156,14 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    await createAuction(data, isEditing, id);
-    isEditing ? toast.success('Auction updated') : toast.success('Auction created');
+    const response = await createAuction(data, isEditing, id);
+    const jsonResponse = await response?.json(); 
+    if (response?.ok) {
+      isEditing ? toast.success('Auction updated') : toast.success('Auction created');
+      router.push(`/auctions/${jsonResponse._id}`);
+    } else {
+      toast.error(isEditing ? 'Failed to update auction' : 'Failed to create auction');
+    }
   };
 
   return (
