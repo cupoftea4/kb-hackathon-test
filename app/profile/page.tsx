@@ -3,17 +3,13 @@ import SessionWrapper from "@/components/SessionWrapper";
 import Link from "next/link";
 import Profile from "@/components/Profile";
 import { fetchJson } from "@/utils/fetchJson";
-import Auctions from "@/components/Auctions";
-import { PageTop } from "@/components/PageTop";
+import Auctions from "@/components/Auctions"; 
 
 const ProfilePage = async () => {
   const auctions = await fetchJson<Auction[]>('auction');
 
   return (
     <main>
-      <SessionWrapper>
-        <PageTop />
-      </SessionWrapper>
       <div className="flex p-5">
         <Link href="/auctions">
           <HomeIcon />
@@ -24,9 +20,9 @@ const ProfilePage = async () => {
           <Profile />
         </SessionWrapper>
       </div>
-      <div className="flex flex-col justify-start items-start sm:px-40 sm:py-5 px-4 gap-4">
-        <h2 className="font-bold text-xl">My auctions</h2>
-        <Auctions auctions={auctions} />
+        <h2 className="font-bold text-xl sm:px-40 sm:py-4 px-4">My auctions</h2>
+      <div className="sm:px-24 px-4">
+        <Auctions auctions={auctions} myAuctions={true} />
       </div>
     </main>
   );
