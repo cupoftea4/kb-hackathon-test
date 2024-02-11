@@ -1,16 +1,15 @@
-import { API_URL } from '@/constants';
+"use client";
 import { APIResponse } from '@/types/general';
-import { cookies } from 'next/headers';
 
-export async function fetchJson<T>(path: string, options?: RequestInit): Promise<T> {
+export async function clientFetchJson<T>(path: string, options?: RequestInit): Promise<T> {
   try {
-    const url = `${API_URL}/${path}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/${path}`;
 
     options = {
       ...options,
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Cookie': cookies().toString()
       }
     };
     const response = await fetch(url, options);
@@ -33,6 +32,6 @@ export async function fetchJson<T>(path: string, options?: RequestInit): Promise
     const jsonData = await response.json() as T;
     return jsonData;
   } catch (error) {
-    throw new Error(`Error fetching JSON data: ${error}. URL: ${API_URL}/${path}`);
+    throw new Error(`Error fetching JSON data: ${error}. URL: ${process.env.NEXT_PUBLIC_API_URL}/${path}`);
   }
 }

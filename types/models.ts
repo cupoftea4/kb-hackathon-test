@@ -17,6 +17,7 @@ type Product = {
 }
 
 type Auction = {
+  _id: string;
   product: Product;
   bids: string[];
   charity: boolean;
