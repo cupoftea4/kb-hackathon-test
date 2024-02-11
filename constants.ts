@@ -1,4 +1,8 @@
-export const API_URL = "http://localhost:5005";
+if (!process.env.API_URL) {
+  throw new Error('Missing API_URL');
+}
+
+export const API_URL = process.env.API_URL;
 
 if(!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRET) {
   throw new Error('Missing GOOGLE_OAUTH_CLIENT_ID or GOOGLE_OAUTH_CLIENT_SECRET');
