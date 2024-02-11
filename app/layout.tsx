@@ -21,15 +21,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  // Server side fetch example
-  fetch('http://localhost:5005/auction', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': cookies().toString() // Send cookies with jwt token
-    }
-  }).then(response => response.json())
-
   return (
     <html lang="en" className="min-h-[100%]">
       <Script

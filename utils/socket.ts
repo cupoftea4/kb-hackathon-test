@@ -3,7 +3,10 @@ import { Socket, io } from "socket.io-client";
 let socket: Socket;
 
 export const connect = (auctionId: string, token: string) => {
-  socket = io('http://localhost:5005', { 
+  if (!process.env.NEXT_PUBLIC_API_URL) {
+    throw new Error('Missing NEXT_PUBLIC_API_URL');
+  }
+  socket = io(process.env.NEXT_PUBLIC_API_URL, { 
     query: { 
       auction: auctionId,
       auth_token: token
