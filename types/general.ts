@@ -1,6 +1,5 @@
-export type APIResponse<T> = {
-  data: T;
-  error?: string;
+export type APIErrorResponse<T> = {
+  message: string
 };
 
 export type AuctionSearchParams = {

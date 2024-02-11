@@ -1,5 +1,5 @@
 "use client";
-import { APIResponse } from '@/types/general';
+import { APIErrorResponse } from '@/types/general';
 
 export async function clientFetchJson<T>(path: string, options?: RequestInit): Promise<T> {
   try {
@@ -18,9 +18,9 @@ export async function clientFetchJson<T>(path: string, options?: RequestInit): P
       let errorMessage = `Request failed with status: ${response.status}`;
 
       try {
-        const errorData = await response.json() as APIResponse<T>;
-        if (errorData && errorData.error) {
-          errorMessage += `, Error: ${errorData.error}`;
+        const errorData = await response.json() as APIErrorResponse<T>;
+        if (errorData && errorData.message) {
+          errorMessage += `, Error: ${errorData.message}`;
         }
       } catch (error) {
         throw new Error(errorMessage + `. Error parsing JSON data: ${error}`);

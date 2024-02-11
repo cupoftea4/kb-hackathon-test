@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const AuctionEdit = () => {
+const AuctionEdit = () => {
   return (
     <div>AuctionEdit</div>
   )
 }
+
+export default AuctionEdit

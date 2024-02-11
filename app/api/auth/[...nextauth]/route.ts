@@ -1,7 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google';
 import { CLIENT_ID, CLIENT_SECRET } from '@/constants';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import { NextApiHandler } from 'next';
 import NextAuth, { AuthOptions } from 'next-auth';
 import clientPromise from '@/lib/mongodb';
 import { signJwt } from '@/lib/jwt';
@@ -21,7 +20,7 @@ type OneTapCredentials = {
 
 const adapter = MongoDBAdapter(clientPromise) as AuthOptions['adapter']
 
-export const Options: AuthOptions = {
+ const authOptions: AuthOptions = {
   adapter: adapter,
   providers: [
     GoogleProvider({
@@ -128,6 +127,6 @@ export const Options: AuthOptions = {
   },
 };
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, Options);
+const authHandler = NextAuth(authOptions);
 
 export { authHandler as GET, authHandler as POST };

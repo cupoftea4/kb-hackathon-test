@@ -10,6 +10,8 @@ export const connect = (auctionId: string, token: string) => {
     } 
   });
 
+
+  // TODO: Handle not authenticated user
   socket.on('connect', () => {
     console.log('Connected to WebSocket server');
   });
