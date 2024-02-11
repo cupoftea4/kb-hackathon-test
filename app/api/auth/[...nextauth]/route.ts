@@ -116,7 +116,7 @@ const nextAuthOptions: NextAuthOptions = {
           },
         } satisfies JwtPayload);
         token.accessToken = jwt;
-        cookies().set('auth_token', jwt);
+        cookies().set('auth_token', jwt, { secure: true, sameSite: 'none' });
       }
       return token;
     },
