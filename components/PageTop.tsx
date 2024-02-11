@@ -17,6 +17,7 @@ export const PageTop = () => {
           alt={data?.user?.name! || 'default'}
           width={60}
           height={60}
+          className='rounded-full'
         />
       </Link>
     </div>

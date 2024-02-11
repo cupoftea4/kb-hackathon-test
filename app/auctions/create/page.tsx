@@ -1,6 +1,18 @@
-const AuctionCreatePage = () => {
+import { fetchAuctionCategories } from "@/api/auction";
+import AuctionForm from "@/components/AuctionForm"
+import SessionWrapper from "@/components/SessionWrapper";
+import { PageTop } from "@/components/PageTop";
+
+const AuctionCreatePage = async () => {
+  const categories = await fetchAuctionCategories();
+
   return (
-    <div>AuctionCreatePage</div>
+    <>
+      <SessionWrapper>
+        <PageTop/>
+      </SessionWrapper>
+      <AuctionForm categories={categories}/>
+    </>
   )
 }
 

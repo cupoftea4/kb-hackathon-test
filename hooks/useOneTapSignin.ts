@@ -13,6 +13,9 @@ const useOneTapSignin = (opt?: OneTapSigninOptions & Pick<SignInOptions, 'redire
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if(document.cookie.includes('g_state')) {
+      return;
+    }
     if (!isLoading && !isSignedIn) {
       const { google } = window as any;
       if (google) {
@@ -47,7 +50,7 @@ const useOneTapSignin = (opt?: OneTapSigninOptions & Pick<SignInOptions, 'redire
         });
       }
     }
-  }, [isLoading, isSignedIn, opt, parentContainerId]);
+  }, [isLoading, isSignedIn, opt, parentContainerId, status]);
 
   return { isLoading };
 };

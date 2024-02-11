@@ -35,7 +35,9 @@ const AuctionCard = ({ auction, editable }: OwnProps) => {
             </div>
             <div className='flex justify-center items-center sm:px-6 px-2'>
               {editable &&
-                <Button>Edit</Button>
+                <Link href={`/auctions/${auction._id}/edit`}>
+                  <Button>Edit</Button>
+                </Link>
               }
             </div>
           </div>

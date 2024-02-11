@@ -1,6 +1,6 @@
 'use client';
 import useOneTapSignin from '@/hooks/useOneTapSignin';
-import React from 'react'
+import React from 'react';
 
 const ONE_TAP_ID = 'oneTap';
 

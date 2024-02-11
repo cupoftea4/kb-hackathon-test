@@ -2,12 +2,10 @@ import HomeIcon from "@/assets/HomeIcon";
 import SessionWrapper from "@/components/SessionWrapper";
 import Link from "next/link";
 import Profile from "@/components/Profile";
-import Auctions from "@/components/Auctions"; 
 import { fetchActions } from "@/api/auction";
+import MyAuctions from "@/components/MyAuctions";
 
 const ProfilePage = async () => {
-  const auctions = await fetchActions();
-  
   return (
     <main>
       <div className="flex p-5">
@@ -20,9 +18,11 @@ const ProfilePage = async () => {
           <Profile />
         </SessionWrapper>
       </div>
-        <h2 className="font-bold text-xl sm:px-40 sm:py-4 px-4">My auctions</h2>
-      <div className="sm:px-24 px-4">
-        <Auctions auctions={auctions} myAuctions={true} className="grid xl:grid-cols-2"/>
+      <h2 className="font-bold text-xl sm:px-40 sm:py-4 px-4">My auctions</h2>
+      <div className="sm:px-24 px-4 pb-4">
+        <SessionWrapper>
+          <MyAuctions />
+        </SessionWrapper>
       </div>
     </main>
   );

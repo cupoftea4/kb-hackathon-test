@@ -17,5 +17,3 @@ if (!process.env.JWT_SECRET) {
 
 // It is important to match the secret on the server
 export const JWT_SECRET = process.env.JWT_SECRET;
-
-
