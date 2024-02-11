@@ -12,6 +12,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 type OwnProps = {
   initAuctions: Auction[]
+  categories: AuctionCategory[]
 }
 
 const fetchAuctions = (params: ReadonlyURLSearchParams) => {
@@ -20,7 +21,7 @@ const fetchAuctions = (params: ReadonlyURLSearchParams) => {
   return clientFetchJson<Auction[]>(path);
 }
 
-export default function AuctionsFilterer({ initAuctions }: OwnProps) {
+export default function AuctionsFilterer({ initAuctions, categories }: OwnProps) {
   const [auctions, setAuctions] = useState(initAuctions);
   const [filters, setFilters] = useState<AuctionSearchParams>({});
   const searchParams = useSearchParams();
@@ -70,9 +71,9 @@ export default function AuctionsFilterer({ initAuctions }: OwnProps) {
    
     const params = new URLSearchParams(searchParams);
     if (term) {
-      params.set('query', term);
+      params.set('name', term);
     } else {
-      params.delete('query');
+      params.delete('name');
     }
     router.replace(`${pathname}?${params.toString()}`);
   }, 300);
@@ -86,6 +87,7 @@ export default function AuctionsFilterer({ initAuctions }: OwnProps) {
         <div className="flex flex-col gap-2">
           <Filters
             onFilterChange={onFilterChange}
+            categories={categories}
           />
           <Button className="w-full" onClick={() => applyFilters(filters)}>Apply filters</Button>
         </div>

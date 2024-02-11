@@ -5,27 +5,12 @@ import { Checkbox } from './ui/checkbox';
 import { AuctionSearchParams } from '@/types/general';
 import { useSearchParams } from 'next/navigation';
 
-const categories = [
-  'army',
-  'tech',
-  'Environment',
-  'Human Rights',
-  'Animals',
-  'Arts',
-  'Community',
-  'International',
-  'Religion',
-  'Science',
-  'Social Services',
-  'Sports',
-  'Other'
-];
-
 type OwnProps = {
-  onFilterChange: <T extends keyof AuctionSearchParams>(name: T, value: AuctionSearchParams[T]) => void
+  onFilterChange: <T extends keyof AuctionSearchParams>(name: T, value: AuctionSearchParams[T]) => void;
+  categories: AuctionCategory[];
 }
 
-const Filters = ({ onFilterChange }: OwnProps) => {
+const Filters = ({ onFilterChange, categories }: OwnProps) => {
   const searchParams = useSearchParams();
   const [charity, setCharity] = React.useState<"true"| "">("");
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>([]);
@@ -65,17 +50,17 @@ const Filters = ({ onFilterChange }: OwnProps) => {
         <span className='text-accent font-semibold'>Category</span>
         {
           categories.map((category) => (
-            <div key={category}>
-              <Checkbox id={category} className='mr-2' onCheckedChange={(checked) => {
+            <div key={category._id}>
+              <Checkbox id={category._id} className='mr-2' onCheckedChange={(checked) => {
                 if (checked) {
-                  setSelectedCategories(prev => [...prev, category]);
+                  setSelectedCategories(prev => [...prev, category.name]);
                 } else {
-                  setSelectedCategories(prev => prev.filter(c => c !== category));
+                  setSelectedCategories(prev => prev.filter(c => c !== category.name));
                 }
               }}
-              checked={selectedCategories.includes(category)}
+              checked={selectedCategories.includes(category.name)}
               />
-              <label htmlFor={category}>{category}</label>
+              <label htmlFor={category._id}>{category.name}</label>
             </div>
           ))
         }

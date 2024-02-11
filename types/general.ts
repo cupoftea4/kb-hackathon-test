@@ -4,7 +4,7 @@ export type APIResponse<T> = {
 };
 
 export type AuctionSearchParams = {
-  query?: string
+  name?: string
   charity?: string
   category?: string
 }

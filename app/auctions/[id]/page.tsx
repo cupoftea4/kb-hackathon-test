@@ -1,4 +1,5 @@
 import AuctionInfo from '@/components/AuctionInfo';
+import Bids from '@/components/Bids';
 import { PageTop } from '@/components/PageTop';
 import SessionWrapper from '@/components/SessionWrapper';
 import { fetchJson } from '@/utils/fetchJson';
@@ -12,6 +13,7 @@ const AuctionPage = async () => {
   const id = pathname!.split('/')[2];
 
   const auction = await fetchJson<AuctionWithBids>(`auction/${id}`);
+  console.log(auction);
 
   return (
     <div className='flex flex-col gap-4'>
@@ -20,17 +22,7 @@ const AuctionPage = async () => {
       </SessionWrapper>
       <div className='lg:px-8'>
         <AuctionInfo auction={auction} authToken={authToken}/>
-        <div>
-          <h1 className='text-3xl font-bold'>Bids</h1>
-          <ul className='flex '>
-            {auction.bids.map(bid => (
-              <li key={bid._id}>
-                <p>{bid.createdBy.name}</p>
-                <p>{bid.amount}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Bids auction={auction} />
       </div>
       
     </div>

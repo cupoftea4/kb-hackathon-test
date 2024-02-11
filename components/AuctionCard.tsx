@@ -23,7 +23,7 @@ const AuctionCard = ({ auction, editable }: OwnProps) => {
             <div className='py-1 flex flex-col'>
               <span className='text-xl font-semibold'>{auction.product.name}</span>
               <div className='flex-grow'>
-                {auction.product.category}
+                {auction.product.category.name}
                 <div>
                   <span className='text-primary'>{auction.currency}</span>
                   <span className='text-lg font-semibold'>{ }</span>

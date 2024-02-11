@@ -2,7 +2,7 @@ type Bid = {
   _id: string;
   amount: number;
   createdBy: User; 
-  createdAt: Date;
+  createdAt: string;
 }
 
 type User = {
@@ -11,9 +11,14 @@ type User = {
   email: string;
 }
 
+type AuctionCategory = {
+  _id: string;
+  name: string;
+}
+
 type Product = {
   name: string;
-  category: string;
+  category: AuctionCategory;
   pictureUrl?: string;
 }
 
@@ -24,8 +29,8 @@ type Auction = {
   charity: boolean;
   currency: string;
   createdBy: User; 
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 type AuctionWithBids =  Omit<Auction, 'bids'>  & { bids: Bid[] };

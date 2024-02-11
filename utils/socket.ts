@@ -19,14 +19,22 @@ export const connect = (auctionId: string, token: string) => {
   });
 }
 
-export const emitNewBid = (bid: { auction: string, amount: number }) => {
+export const emitNewBid = (bid: { auction: string, amount: number }): Promise<string> => {
   if (!socket) {
     throw new Error('You must call "connect" before emitting new bids');
   }
 
-  socket.emit('createBid', {
-    ...bid,
-    createdAt: new Date()
+  return new Promise((resolve, reject) => {
+    socket.emit('createBid', {
+      ...bid,
+      createdAt: new Date()
+    }, (success: boolean) => {
+      if (success) {
+        resolve("");
+      } else {
+        reject('Failed to create bid');
+      }
+    });
   });
 }
 
@@ -39,6 +47,14 @@ export const subscribeToNewBids = (cb: (bid: Bid) => void) => {
   socket.on('newBid', (bid: Bid) => {
     cb(bid);
   });
+}
+
+export const unsubscribeFromNewBids = () => {
+  if (!socket) {
+    throw new Error('You must call "connect" before unsubscribing from new bids');
+  }
+
+  socket.off('newBid');
 }
 
 export const disconnect = () => {
