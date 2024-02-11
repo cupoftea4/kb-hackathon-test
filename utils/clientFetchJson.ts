@@ -10,6 +10,8 @@ export async function clientFetchJson<T>(path: string, options?: RequestInit): P
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
+        // TODO: Store as secure cookie and somehow fix production deployment problem that ignores credentials: 'include'
+        'Cookie': document.cookie
       }
     };
     const response = await fetch(url, options);
