@@ -47,7 +47,7 @@ const useOneTapSignin = (opt?: OneTapSigninOptions & Pick<SignInOptions, 'redire
         });
       }
     }
-  }, [isLoading, isSignedIn, parentContainerId]);
+  }, [isLoading, isSignedIn, opt, parentContainerId]);
 
   return { isLoading };
 };

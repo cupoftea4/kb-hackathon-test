@@ -2,12 +2,12 @@ import HomeIcon from "@/assets/HomeIcon";
 import SessionWrapper from "@/components/SessionWrapper";
 import Link from "next/link";
 import Profile from "@/components/Profile";
-import { fetchJson } from "@/utils/fetchJson";
 import Auctions from "@/components/Auctions"; 
+import { fetchActions } from "@/api/auction";
 
 const ProfilePage = async () => {
-  const auctions = await fetchJson<Auction[]>('auction');
-
+  const auctions = await fetchActions();
+  
   return (
     <main>
       <div className="flex p-5">
