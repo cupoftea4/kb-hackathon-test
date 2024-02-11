@@ -8,6 +8,7 @@ import { JwtPayload } from '@/types/jwt';
 import { cookies } from 'next/headers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { OAuth2Client } from 'google-auth-library';
+import { NextApiHandler } from 'next';
 
 const googleAuthClient = new OAuth2Client(CLIENT_ID);
 
@@ -16,11 +17,11 @@ type OneTapCredentials = {
   clientSecret: string;
   credential: string; // JWT token
   select_by: string;
-}
+};
 
-const adapter = MongoDBAdapter(clientPromise) as AuthOptions['adapter']
+const adapter = MongoDBAdapter(clientPromise) as AuthOptions['adapter'];
 
- const authOptions: AuthOptions = {
+const authHandler: NextApiHandler = (req, res) =>  NextAuth(req, res, {
   adapter: adapter,
   providers: [
     GoogleProvider({
@@ -125,8 +126,6 @@ const adapter = MongoDBAdapter(clientPromise) as AuthOptions['adapter']
       return session;
     },
   },
-};
-
-const authHandler = NextAuth(authOptions);
+});
 
 export { authHandler as GET, authHandler as POST };
