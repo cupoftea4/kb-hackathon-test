@@ -67,11 +67,13 @@ const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | 
     charity: data.charity,
   };
 
+  console.log('cookies', document.cookie);
   const response = await fetch(url, {
     method,
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      'Cookie': document.cookie
     },
     body: JSON.stringify(requestBody),
   }).catch((error) => {
