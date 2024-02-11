@@ -133,8 +133,8 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
     defaultValues: {
       name: isEditing ? auctionData?.product.name : '',
       description: isEditing ? auctionData?.product.description : '',
-      minPrice: isEditing ? auctionData?.minPrice.toString() : '0',
-      minBidStep: isEditing ? auctionData?.minBidStep.toString() : '1',
+      minPrice: isEditing ? auctionData?.minPrice?.toString() : '0',
+      minBidStep: isEditing ? auctionData?.minBidStep?.toString() : '1',
       currency: isEditing ? auctionData?.currency : 'UAH',
     },
   });

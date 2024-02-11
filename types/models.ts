@@ -27,8 +27,6 @@ type Auction = {
   _id: string;
   product: Product;
   bids: string[];
-  minPrice: number;
-  minBidStep: number;
   charity: boolean;
   minPrice?: number;
   minBidStep?: number;

@@ -2,7 +2,6 @@ import HomeIcon from "@/assets/HomeIcon";
 import SessionWrapper from "@/components/SessionWrapper";
 import Link from "next/link";
 import Profile from "@/components/Profile";
-import { fetchActions } from "@/api/auction";
 import MyAuctions from "@/components/MyAuctions";
 
 const ProfilePage = async () => {
