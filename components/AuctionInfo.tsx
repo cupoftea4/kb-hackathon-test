@@ -53,7 +53,7 @@ const AuctionInfo = ({ auction, authToken }: OwnProps) => {
           <h1 className='text-3xl font-bold'>{auction.product.name}</h1>
           <p className='text-xl'>Category: {auction.product.category.name}</p>
           <p className='text-xl'>Current price: {lastPrice}</p>
-          <p className='text-xl'>Ends at: {new Date().toLocaleString()}</p>
+          <p className='text-xl'>Ends at: {auction.closeDate ? new Date(auction.closeDate).toLocaleDateString() : "soon"}</p>
           {auction.charity && 
             <TooltipProvider>
               <Tooltip>

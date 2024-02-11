@@ -27,6 +27,7 @@ type Auction = {
   product: Product;
   bids: string[];
   charity: boolean;
+  closeDate?: string;
   currency: string;
   createdBy: User; 
   createdAt?: string;
