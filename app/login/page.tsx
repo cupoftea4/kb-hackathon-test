@@ -7,29 +7,27 @@ const _Login = () => {
   const { data: session } = useSession();
 
   return (
-    <>
-      <div className="flex justify-center items-center">
-        <Button
-          onClick={() => {
-            signIn("google");
-          }}
-        >
-          Sign in with Google
-        </Button>
-        {session && (
-          <>
-            <Button
-              onClick={() => {
-                signOut();
-              }}
-            >
-              Sign out
-            </Button>
-          </>
-        )
-        }
-      </div>
-    </>
+    <div className="flex justify-center items-center h-full">
+      <Button
+        onClick={() => {
+          signIn("google");
+        }}
+      >
+        Sign in with Google
+      </Button>
+      {session && (
+        <>
+          <Button
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign out
+          </Button>
+        </>
+      )
+      }
+    </div>
   )
 }
 

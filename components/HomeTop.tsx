@@ -20,8 +20,8 @@ const HomeTop = () => {
         <Image
           src={data?.user?.image || '/default-avatar.png'}
           alt={data?.user?.name! || 'default'}
-          width={50}
-          height={50}
+          width={60}
+          height={60}
           className='rounded-full cursor-pointer'
         />
       </Link>
