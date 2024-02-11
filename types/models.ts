@@ -30,6 +30,9 @@ type Auction = {
   minPrice: number;
   minBidStep: number;
   charity: boolean;
+  minPrice?: number;
+  minBidStep?: number;
+  currentMaxBidPrice?: number;
   closeDate?: string;
   currency: string;
   createdBy: User;

@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react'
 
 type OwnProps = {
   auction: AuctionWithBids
+  socketConnected: boolean
 }
 
-const Bids = ({ auction }: OwnProps) => {
+const Bids = ({ auction, socketConnected }: OwnProps) => {
   const [bids, setBids] = useState<Bid[]>(auction.bids);
 
   useEffect(() => {
+    if (!socketConnected) return;
     subscribeToNewBids((newBid) => {
       setBids(prev => [newBid, ...prev]);
     });
@@ -17,7 +19,7 @@ const Bids = ({ auction }: OwnProps) => {
     return () => {
       unsubscribeFromNewBids();
     }
-  }, []);
+  }, [socketConnected]);
   
   return (
     <div className='bg-backgroundOverlay rounded-md p-2'>

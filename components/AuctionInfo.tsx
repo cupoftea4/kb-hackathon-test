@@ -6,26 +6,23 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { toast } from 'sonner';
-import { connect, emitNewBid, subscribeToNewBids, unsubscribeFromNewBids } from '@/utils/socket';
+import { emitNewBid, subscribeToNewBids, unsubscribeFromNewBids } from '@/utils/socket';
 
 type OwnProps = {
   auction: AuctionWithBids
-  authToken?: string
+  socketConnected: boolean
 }
 
-const AuctionInfo = ({ auction, authToken }: OwnProps) => {
+const AuctionInfo = ({ auction, socketConnected }: OwnProps) => {
   const [lastPrice, setLastPrice] = useState<number>(auction.bids.sort((a, b) => {
     return new Date(b.createdAt).getSeconds() - new Date(a.createdAt).getSeconds()
-  })[0]?.amount ?? 100);
+  })[0]?.amount ?? auction.minPrice);
 
   const [bid, setBid] = useState<number>(lastPrice + 100);
-  
-  useEffect(() => {
-    if (!authToken) return;
-    connect(auction._id, authToken);
-  }, [auction._id, authToken]);
+
 
   useEffect(() => {
+    if (!socketConnected) return;
     subscribeToNewBids((newBid) => {
       setLastPrice(newBid.amount);
     });
@@ -33,11 +30,11 @@ const AuctionInfo = ({ auction, authToken }: OwnProps) => {
     return () => {
       unsubscribeFromNewBids();
     }
-  }, []);
+  }, [socketConnected]);
 
   useEffect(() => {
-    setBid(lastPrice + 100);
-  }, [lastPrice]);
+    setBid(lastPrice + (auction.minBidStep ?? 100));
+  }, [auction.minBidStep, lastPrice]);
 
   return (
     <div className='flex flex-1 flex-col sm:flex-row p-2 gap-6 items-center sm:items-start'>
@@ -70,8 +67,9 @@ const AuctionInfo = ({ auction, authToken }: OwnProps) => {
         <div className='p-4'>
           <Input placeholder='Bid' type='number' value={bid} onChange={(e) => setBid(Number(e.target.value))} />
           <Button
+            disabled={!socketConnected}
             onClick={() => {
-              if (bid < lastPrice + 100) {
+              if (bid < lastPrice + (auction.minBidStep ?? 100)) {
                 toast.error('Bid too low');
               } else {
                 emitNewBid({ amount: bid, auction: auction._id })

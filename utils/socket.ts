@@ -2,10 +2,11 @@ import { Socket, io } from "socket.io-client";
 
 let socket: Socket;
 
-export const connect = (auctionId: string, token: string) => {
+export const connect = (auctionId: string, token: string): Promise<string> => {
   if (!process.env.NEXT_PUBLIC_API_URL) {
     throw new Error('Missing NEXT_PUBLIC_API_URL');
   }
+
   socket = io(process.env.NEXT_PUBLIC_API_URL, { 
     query: { 
       auction: auctionId,
@@ -13,14 +14,20 @@ export const connect = (auctionId: string, token: string) => {
     } 
   });
 
-
-  // TODO: Handle not authenticated user
-  socket.on('connect', () => {
-    console.log('Connected to WebSocket server');
-  });
-
   socket.on('error', (error: any) => {
     console.error('WebSocket error', error);
+  });
+
+  return new Promise((resolve, reject) => {
+    socket.on('connected', () => {
+      console.log('Connected to WebSocket server');
+      resolve("");
+    });
+
+    socket.on('error', (error: any) => {
+      console.error('WebSocket error', error);
+      reject('Failed to connect to WebSocket server' + error);
+    });
   });
 }
 

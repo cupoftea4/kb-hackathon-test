@@ -1,3 +1,4 @@
+import AuctionContent from '@/components/AuctionContent';
 import AuctionInfo from '@/components/AuctionInfo';
 import Bids from '@/components/Bids';
 import { PageTop } from '@/components/PageTop';
@@ -20,11 +21,7 @@ const AuctionPage = async () => {
       <SessionWrapper>
         <PageTop />
       </SessionWrapper>
-      <div className='lg:px-8'>
-        <AuctionInfo auction={auction} authToken={authToken}/>
-        <Bids auction={auction} />
-      </div>
-      
+      <AuctionContent auction={auction} authToken={authToken} />
     </div>
   )
 }
