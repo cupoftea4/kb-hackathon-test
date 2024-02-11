@@ -5,14 +5,24 @@ import { Input } from './ui/input'
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
-const HomeTop = () => {
+type OwnProps = {
+  onInputChanged?: (value: string) => void
+}
+
+const HomeTop = ({ onInputChanged }: OwnProps) => {
   const { data } = useSession();
 
   return (
     <div className='flex p-5 gap-2'>
       <div className='flex-1 flex justify-center items-center'>
         <div className='w-fit flex items-center border-2 px-2 rounded-md'>
-          <Input placeholder='Search' className='inline-block' />
+          <Input 
+            placeholder='Search' 
+            className='inline-block' 
+            onChange={(e) => {
+              onInputChanged?.(e.target.value);
+            }}
+           />
           <SearchIcon />
         </div>
       </div>

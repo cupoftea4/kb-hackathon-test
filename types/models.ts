@@ -1,7 +1,8 @@
 type Bid = {
-  id: string;
+  _id: string;
   amount: number;
   createdBy: User; 
+  createdAt: Date;
 }
 
 type User = {
@@ -27,4 +28,4 @@ type Auction = {
   updatedAt?: Date;
 }
 
-type AuctionWithBids = Auction & { bids: Bid[] };
+type AuctionWithBids =  Omit<Auction, 'bids'>  & { bids: Bid[] };

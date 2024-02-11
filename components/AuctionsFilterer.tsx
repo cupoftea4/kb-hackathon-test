@@ -8,6 +8,7 @@ import { AuctionSearchParams } from '@/types/general';
 import { clientFetchJson } from '@/utils/clientFetchJson';
 import HomeTop from './HomeTop';
 import SessionWrapper from './SessionWrapper';
+import { useDebouncedCallback } from 'use-debounce';
 
 type OwnProps = {
   initAuctions: Auction[]
@@ -64,10 +65,22 @@ export default function AuctionsFilterer({ initAuctions }: OwnProps) {
     }));
   }, []);
 
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
+   
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set('query', term);
+    } else {
+      params.delete('query');
+    }
+    router.replace(`${pathname}?${params.toString()}`);
+  }, 300);
+
   return (
     <>
       <SessionWrapper>
-        <HomeTop />
+        <HomeTop onInputChanged={handleSearch} />
       </SessionWrapper>
       <div className="flex flex-col max-w-screen-lg m-auto sm:flex-row-reverse px-4 gap-4">
         <div className="flex flex-col gap-2">

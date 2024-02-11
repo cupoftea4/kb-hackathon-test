@@ -7,7 +7,7 @@ const AuctionsPage = async () => {
 
   return (
     <main>
-      <div className="max-w-screen-xl m-auto relative">
+      <div className="relative">
         <AuctionsFilterer initAuctions={auctions} />
         <Button 
           className="sticky bottom-0 w-full sm:w-auto sm:bottom-8 left-[80%] rounded-none sm:rounded-md"

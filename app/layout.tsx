@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import Script from "next/script";
 import GoogleOneTap from "@/components/GoogleOneTap";
 import SessionWrapper from "@/components/SessionWrapper";
+import { Toaster } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -30,16 +31,17 @@ export default function RootLayout({
   }).then(response => response.json())
 
   return (
-    <html lang="en">
+    <html lang="en" className="min-h-[100%]">
       <Script
         src="https://accounts.google.com/gsi/client"
         strategy="afterInteractive"
       />
-      <body className={cn(montserrat.className, "bg-background", "min-h-[100%]")}>
+      <body className={cn(montserrat.className, "bg-background", "min-h-[100vh] max-w-screen-xl m-auto")}>
         <SessionWrapper>
           <GoogleOneTap />
         </SessionWrapper>
         {children}
+        <Toaster richColors  />
       </body>
     </html>
   );
