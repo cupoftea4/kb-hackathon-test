@@ -10,8 +10,8 @@ type OwnProps = {
 
 const AuctionCard = ({ auction, editable }: OwnProps) => {
   return (
-    <Link href={`/auctions/${auction._id}`}>
-      <div className='bg-backgroundOverlay px-4 py-4 rounded-lg sm:w-[32rem]'>
+    <Link href={`/auctions/${auction._id}`} className='block w-full'>
+      <div className='bg-backgroundOverlay px-4 py-4 rounded-lg'>
         <div className='flex gap-4 flex-col sm:flex-row'>
           <Image
             src='/default-image.jpg'

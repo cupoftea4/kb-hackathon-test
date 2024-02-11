@@ -22,7 +22,7 @@ const ProfilePage = async () => {
       </div>
         <h2 className="font-bold text-xl sm:px-40 sm:py-4 px-4">My auctions</h2>
       <div className="sm:px-24 px-4">
-        <Auctions auctions={auctions} myAuctions={true} />
+        <Auctions auctions={auctions} myAuctions={true} className="grid xl:grid-cols-2"/>
       </div>
     </main>
   );
