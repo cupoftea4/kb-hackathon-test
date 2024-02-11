@@ -1,14 +1,13 @@
 import GoogleProvider from 'next-auth/providers/google';
 import { CLIENT_ID, CLIENT_SECRET } from '@/constants';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import NextAuth, { AuthOptions } from 'next-auth';
+import NextAuth, { AuthOptions, NextAuthOptions } from 'next-auth';
 import clientPromise from '@/lib/mongodb';
 import { signJwt } from '@/lib/jwt';
 import { JwtPayload } from '@/types/jwt';
 import { cookies } from 'next/headers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { OAuth2Client } from 'google-auth-library';
-import { NextApiHandler } from 'next';
 
 const googleAuthClient = new OAuth2Client(CLIENT_ID);
 
@@ -21,7 +20,7 @@ type OneTapCredentials = {
 
 const adapter = MongoDBAdapter(clientPromise) as AuthOptions['adapter'];
 
-const authHandler: NextApiHandler = (req, res) =>  NextAuth(req, res, {
+const nextAuthOptions: NextAuthOptions = {
   adapter: adapter,
   providers: [
     GoogleProvider({
@@ -126,6 +125,8 @@ const authHandler: NextApiHandler = (req, res) =>  NextAuth(req, res, {
       return session;
     },
   },
-});
+};
+
+const authHandler = NextAuth(nextAuthOptions);
 
 export { authHandler as GET, authHandler as POST };
