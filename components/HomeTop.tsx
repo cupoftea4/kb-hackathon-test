@@ -1,9 +1,13 @@
-import React from 'react'
+"use client"
 import Image from 'next/image'
 import SearchIcon from '@/assets/SearchIcon'
 import { Input } from './ui/input'
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 const HomeTop = () => {
+  const { data } = useSession();
+
   return (
     <div className='flex p-5 gap-2'>
       <div className='flex-1 flex justify-center items-center'>
@@ -12,8 +16,16 @@ const HomeTop = () => {
           <SearchIcon />
         </div>
       </div>
-      <Image src='/default-avatar.png' alt='Avatar image' width={70} height={70} />
-    </div>
+      <Link href='/profile'>
+        <Image
+          src={data?.user?.image || '/default-avatar.png'}
+          alt={data?.user?.name! || 'default'}
+          width={50}
+          height={50}
+          className='rounded-full cursor-pointer'
+        />
+      </Link>
+    </div >
   )
 }
 

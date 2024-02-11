@@ -1,11 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { signOut, useSession } from "next-auth/react";
-import { signIn } from "next-auth/react";
 import { useEffect } from "react";
 
-export default function Login() {
-  const { data: session, status, update } = useSession();
-
+function Login() {
   // Client side fetch example
   useEffect(() => {
     const res = fetch('http://localhost:5005/bid', {
@@ -18,30 +13,8 @@ export default function Login() {
       console.log(json)
     )
   }, [])
+  
   return (
-    <>
-      <div>
-        <Button
-          onClick={() => {
-            signIn("google");
-          }}
-        >
-          Sign in with Google
-        </Button>
-        {session && (
-          <>
-            <p>Signed in as {session.user?.email}</p>
-            <Button
-              onClick={() => {
-                signOut();
-              }}
-            >
-              Sign out
-            </Button>
-          </>
-        )
-        }
-      </div>
-    </>
+    <></>
   );
 }

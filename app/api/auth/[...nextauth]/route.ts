@@ -21,7 +21,7 @@ type OneTapCredentials = {
 
 const adapter = MongoDBAdapter(clientPromise) as AuthOptions['adapter']
 
-export const OPTIONS: AuthOptions = {
+export const Options: AuthOptions = {
   adapter: adapter,
   providers: [
     GoogleProvider({
@@ -128,6 +128,6 @@ export const OPTIONS: AuthOptions = {
   },
 };
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, OPTIONS);
+const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, Options);
 
 export { authHandler as GET, authHandler as POST };

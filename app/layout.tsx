@@ -4,7 +4,8 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { cookies } from "next/headers";
 import Script from "next/script";
-import GoogleOneTapWrapper from "@/components/GoogleOneTapWrapper";
+import GoogleOneTap from "@/components/GoogleOneTap";
+import SessionWrapper from "@/components/SessionWrapper";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -26,10 +27,8 @@ export default function RootLayout({
       'Content-Type': 'application/json',
       'Cookie': cookies().toString() // Send cookies with jwt token
     }
-  }).then(response => response.json()).then(json =>
-    console.log(json)
-  )
-  
+  }).then(response => response.json())
+
   return (
     <html lang="en">
       <Script
@@ -37,7 +36,9 @@ export default function RootLayout({
         strategy="afterInteractive"
       />
       <body className={cn(montserrat.className, "bg-background", "min-h-[100%]")}>
-        <GoogleOneTapWrapper />
+        <SessionWrapper>
+          <GoogleOneTap />
+        </SessionWrapper>
         {children}
       </body>
     </html>

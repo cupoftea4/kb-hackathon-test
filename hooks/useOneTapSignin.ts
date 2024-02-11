@@ -1,26 +1,24 @@
-"use client";
+'use client';
 import { useEffect, useState } from 'react';
 import { useSession, signIn, SignInOptions } from 'next-auth/react';
-import { CLIENT_ID } from '@/constants';
 
 interface OneTapSigninOptions {
   parentContainerId?: string;
 }
 
-const useOneTapSignin = (
-  opt?: OneTapSigninOptions & Pick<SignInOptions, 'redirect' | 'callbackUrl'>
-) => {
+const useOneTapSignin = (opt?: OneTapSigninOptions & Pick<SignInOptions, 'redirect' | 'callbackUrl'>) => {
   const { status } = useSession();
   const isSignedIn = status === 'authenticated';
   const { parentContainerId } = opt || {};
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     if (!isLoading && !isSignedIn) {
       const { google } = window as any;
       if (google) {
         google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID,
+          cancel_on_tap_outside: false,
           callback: async (response: any) => {
             setIsLoading(true);
 
@@ -33,8 +31,7 @@ const useOneTapSignin = (
             setIsLoading(false);
           },
           prompt_parent_id: parentContainerId,
-          style:
-            'position: absolute; top: 100px; right: 30px;width: 0; height: 0; z-index: 1001;',
+          style: 'position: absolute; top: 100px; right: 30px;width: 0; height: 0; z-index: 1001;',
         });
 
         // Here we just console.log some error situations and reason why the google one tap
@@ -50,7 +47,7 @@ const useOneTapSignin = (
         });
       }
     }
-  }, [isLoading, isSignedIn, opt, parentContainerId]);
+  }, [isLoading, isSignedIn, parentContainerId]);
 
   return { isLoading };
 };

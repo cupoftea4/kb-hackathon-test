@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { AuctionSearchParams } from '@/types/general';
 import { clientFetchJson } from '@/utils/clientFetchJson';
 import HomeTop from './HomeTop';
+import SessionWrapper from './SessionWrapper';
 
 type OwnProps = {
   initAuctions: Auction[]
@@ -46,7 +47,7 @@ export default function AuctionsFilterer({ initAuctions }: OwnProps) {
   };
 
   const onFilterChange = useCallback(<T extends keyof AuctionSearchParams>(
-    changedProp: T, 
+    changedProp: T,
     value: AuctionSearchParams[T]
   ) => {
     if (value === "") {
@@ -65,14 +66,16 @@ export default function AuctionsFilterer({ initAuctions }: OwnProps) {
 
   return (
     <>
-      <HomeTop />
+      <SessionWrapper>
+        <HomeTop />
+      </SessionWrapper>
       <div className="flex flex-col max-w-screen-lg m-auto sm:flex-row-reverse px-4 gap-4">
-        <div className="flex flex-col gap-2">            
-          <Filters 
+        <div className="flex flex-col gap-2">
+          <Filters
             onFilterChange={onFilterChange}
-           />
+          />
           <Button className="w-full" onClick={() => applyFilters(filters)}>Apply filters</Button>
-        </div>  
+        </div>
         <Auctions auctions={auctions} />
       </div>
     </>
