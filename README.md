@@ -1,6 +1,10 @@
+## You can check it out here
+
+[https://kbh-test.netlify.app](https://kbh-test.netlify.app)
+
 ## Server repo
 
-github.com/Oleksii-Morozov/kb-hackathon-test-backend
+[https://github.com/Oleksii-Morozov/kb-hackathon-test-backend](https://github.com/Oleksii-Morozov/kb-hackathon-test-backend)
 
 ## Getting Started
 
