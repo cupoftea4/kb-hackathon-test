@@ -45,6 +45,12 @@ async function uploadImage(file: File) {
   }
 }
 
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+}
+
 const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | undefined, id: string) => {
   let method = 'POST';
   let url = `${process.env.NEXT_PUBLIC_API_URL}/auction`;
@@ -70,12 +76,14 @@ const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | 
   console.log('cookies', document.cookie);
   const response = await fetch(url, {
     method,
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'Cookie': document.cookie
     },
-    body: JSON.stringify(requestBody),
+    body: JSON.stringify({ 
+      ...requestBody, 
+      // cursed
+      auth_token: getCookie('auth_token')
+    }),
   }).catch((error) => {
     console.error('Error:', error);
   });
