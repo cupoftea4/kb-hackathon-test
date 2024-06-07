@@ -9,6 +9,7 @@ import { clientFetchJson } from '@/utils/clientFetchJson';
 import HomeTop from './HomeTop';
 import SessionWrapper from './SessionWrapper';
 import { useDebouncedCallback } from 'use-debounce';
+import { Skeleton } from './ui/skeleton';
 
 type OwnProps = {
   initAuctions: Auction[]
@@ -68,7 +69,7 @@ export default function AuctionsFilterer({ initAuctions, categories }: OwnProps)
 
   const handleSearch = useDebouncedCallback((term) => {
     console.log(`Searching... ${term}`);
-   
+
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set('name', term);
@@ -91,7 +92,15 @@ export default function AuctionsFilterer({ initAuctions, categories }: OwnProps)
           />
           <Button className="w-full" onClick={() => applyFilters(filters)}>Apply filters</Button>
         </div>
-        <Auctions auctions={auctions} />
+        {auctions.length > 0 ? (
+          <Auctions auctions={auctions} />
+        ) : (
+          <div className="grid xl:grid-cols-2 gap-4">
+            <Skeleton className="h-[200px] w-[100%]" />
+            <Skeleton className="h-[200px] w-[100%]" />
+            <Skeleton className="h-[200px] w-[100%]" />
+          </div>
+        )}
       </div>
     </>
   );

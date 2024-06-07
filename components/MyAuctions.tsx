@@ -3,6 +3,7 @@ import Auctions from '@/components/Auctions';
 import { clientFetchJson } from '@/utils/clientFetchJson';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { Skeleton } from './ui/skeleton';
 
 const MyAuctions = () => {
   const { data } = useSession();
@@ -18,7 +19,14 @@ const MyAuctions = () => {
 
   return (
     <>
-      <Auctions auctions={auctions} myAuctions={true} className="grid xl:grid-cols-2" />
+      {auctions.length > 0 ? (
+        <Auctions auctions={auctions} myAuctions={true} className="grid xl:grid-cols-2" />
+      ) : (
+        <div className="grid xl:grid-cols-2 gap-4">
+          <Skeleton className="h-[200px] w-[100%]" />
+          <Skeleton className="h-[200px] w-[100%]" />
+        </div>
+      )}
     </>
   )
 }
