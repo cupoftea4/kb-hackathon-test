@@ -18,32 +18,7 @@ import { Checkbox } from './ui/checkbox';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-
-
-async function uploadImage(file: File) {
-  const formData = new FormData();
-  formData.append("image", file);
-
-  try {
-    const response = await fetch("https://api.imgur.com/3/image", {
-      method: "POST",
-      headers: {
-        "Authorization": "Client-ID aca6d2502f5bfd8"
-      },
-      body: formData
-    });
-    const jsonResponse = await response.json();
-
-    if (response.ok) {
-      const photo = jsonResponse.data.link;
-      return photo;
-    } else {
-      throw new Error(jsonResponse.data.error);
-    }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
+import { ApiAttachment } from '@/types/general';
 
 function getCookie(name: string) {
   const value = `; ${document.cookie}`;
@@ -51,7 +26,7 @@ function getCookie(name: string) {
   if (parts.length === 2) return parts.pop()?.split(';').shift();
 }
 
-const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | undefined, id: string) => {
+const createAuction = async (data: any, isEditing: boolean | undefined, id: string) => {
   let method = 'POST';
   let url = `${process.env.NEXT_PUBLIC_API_URL}/auction`;
 
@@ -65,15 +40,16 @@ const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | 
       name: data.name,
       description: data.description,
       category: data.category,
+      picture: data.picture,
     },
     minPrice: parseFloat(data.minPrice),
     minBidStep: parseFloat(data.minBidStep),
     currency: data.currency,
     closeDate: data.closeDate,
     charity: data.charity,
+    picture: data.picture,
   };
 
-  console.log('cookies', document.cookie);
   const response = await fetch(url, {
     method,
     headers: {
@@ -89,7 +65,6 @@ const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | 
   });
   return response;
 };
-
 
 const schema = z.object({
   name: z.string().min(5, {
@@ -123,6 +98,7 @@ const schema = z.object({
   }),
 
   charity: z.boolean().optional(),
+
 });
 
 type OwnProps = {
@@ -132,27 +108,27 @@ type OwnProps = {
 };
 
 const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
-
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(categories, auctionData, isEditing);
-
   const router = useRouter();
-
   const pathname = usePathname();
   const id = pathname!.split('/')[2];
 
   const [image, setImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
-  if (isEditing && auctionData?.product.pictureUrl) {
+  if (isEditing && auctionData?.product.pictureUrl && !image) {
     setImage(auctionData.product.pictureUrl);
   }
 
-  const handleFileChange = async (event: any) => {
+  const handleFileChange = (event: any) => {
     const file = event.target.files[0];
-    console.log(file);
     if (file) {
-      setImage(await uploadImage(file));
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setFile(file);
     }
   };
 
@@ -169,13 +145,38 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     setIsLoading(true);
-    const response = await createAuction(data, isEditing, id);
-    const jsonResponse = await response?.json();
-    if (response?.ok) {
-      isEditing ? toast.success('Auction updated') : toast.success('Auction created');
-      router.push(`/auctions/${jsonResponse._id}`);
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        const base64Data = (reader.result as string).split(',')[1];
+        const attachment: ApiAttachment = {
+          id: Date.now(),
+          data: base64Data,
+          fileType: file.type,
+          name: file.name,
+        };
+
+        const response = await createAuction({ ...data, picture: attachment }, isEditing, id);
+        const jsonResponse = await response?.json();
+
+        if (response?.ok) {
+          isEditing ? toast.success('Auction updated') : toast.success('Auction created');
+          router.push(`/auctions/${jsonResponse._id}`);
+        } else {
+          toast.error(isEditing ? 'Failed to update auction' : 'Failed to create auction');
+        }
+      };
     } else {
-      toast.error(isEditing ? 'Failed to update auction' : 'Failed to create auction');
+      const response = await createAuction(data, isEditing, id);
+      const jsonResponse = await response?.json();
+
+      if (response?.ok) {
+        isEditing ? toast.success('Auction updated') : toast.success('Auction created');
+        router.push(`/auctions/${jsonResponse._id}`);
+      } else {
+        toast.error(isEditing ? 'Failed to update auction' : 'Failed to create auction');
+      }
     }
   };
 
@@ -183,22 +184,36 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='flex sm:flex-row flex-col px-5 gap-4'>
-          <div className='sm:w-52 h-52 w-full rounded-lg bg-backgroundOverlay'>
-            {isEditing && auctionData?.product.pictureUrl && (
-              <Image
-                src={image ? image : auctionData.product.pictureUrl}
-                alt={auctionData.product.name}
-                className='object-cover w-full h-full'
-                width={208}
-                height={208}
-              />
+          <div className='sm:w-52 h-52 w-full rounded-lg bg-backgroundOverlay relative'>
+            {image && (
+              <>
+                <Image
+                  src={image}
+                  alt="Uploaded image"
+                  className='object-cover w-full h-full'
+                  width={208}
+                  height={208}
+                />
+                <div className="absolute inset-0 top-auto py-1 rounded-lg flex items-center justify-center bg-black bg-opacity-50 text-white">
+                  <span>Click to change image</span>
+                </div>
+              </>
+            )}
+            {!image && (
+              <div className="absolute inset-0 top-auto py-1 rounded-lg flex items-center justify-center bg-black bg-opacity-50 text-white">
+                <span>Upload Image</span>
+              </div>
             )}
             <FormField
               name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="file" {...field} className='bg-backgroundOverlay h-52 w-full' onChange={handleFileChange} />
+                    <Input 
+                      type="file" 
+                      onChange={handleFileChange} 
+                      className={`bg-backgroundOverlay h-52 w-full absolute top-0 left-0 opacity-0 ${image ? 'cursor-pointer' : ''}`}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -39,7 +39,7 @@ const AuctionInfo = ({ auction, socketConnected }: OwnProps) => {
   return (
     <div className='flex flex-1 flex-col sm:flex-row p-2 gap-6 items-center sm:items-start'>
       <Image 
-        src={'/default-image.jpg'} 
+        src={auction.picture?.url ?? '/default-image.jpg'} 
         alt={auction.product.name} 
         width={300} height={300} 
         style={{objectFit: 'cover', aspectRatio: '1/1', maxWidth: '300px'}}

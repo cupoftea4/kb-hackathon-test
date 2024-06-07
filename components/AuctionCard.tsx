@@ -14,7 +14,7 @@ const AuctionCard = ({ auction, editable }: OwnProps) => {
       <div className='bg-backgroundOverlay px-4 py-4 rounded-lg'>
         <div className='flex gap-4 flex-col sm:flex-row'>
           <Image
-            src='/default-image.jpg'
+            src={auction.picture?.url ?? '/default-image.jpg'}
             width={500} height={305}
             alt={auction.product.name}
             className='object-cover aspect-square rounded-md w-full sm:max-w-32'

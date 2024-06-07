@@ -36,6 +36,10 @@ type Auction = {
   createdBy: User;
   createdAt?: string;
   updatedAt?: string;
+  picture?: {
+    url: string;
+    type: string;
+  }
 };
 
 type AuctionWithBids = Omit<Auction, 'bids'> & { bids: Bid[] };

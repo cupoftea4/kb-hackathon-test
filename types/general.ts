@@ -7,3 +7,11 @@ export type AuctionSearchParams = {
   charity?: string
   category?: string
 }
+
+export type ApiAttachment = {
+  id: number;
+  path?: string;
+  data?: any;
+  fileType: string;
+  name: string;
+}
