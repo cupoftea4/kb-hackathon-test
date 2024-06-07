@@ -15,6 +15,7 @@ const useOneTapSignin = (opt?: OneTapSigninOptions & Pick<SignInOptions, 'redire
   useEffect(() => {
     if (document.cookie.includes('g_state')) {
       console.log('Google One Tap cookie found');
+      setIsLoading(false);
       return;
     }
 

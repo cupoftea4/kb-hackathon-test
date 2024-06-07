@@ -5,8 +5,6 @@ export async function clientFetchJson<T>(path: string, options?: RequestInit): P
   try {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/${path}`;
 
-    console.log('Your Cookies :D ', document.cookie);
-
     options = {
       ...options,
       credentials: 'include',
