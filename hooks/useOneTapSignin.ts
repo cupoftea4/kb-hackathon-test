@@ -13,9 +13,11 @@ const useOneTapSignin = (opt?: OneTapSigninOptions & Pick<SignInOptions, 'redire
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if(document.cookie.includes('g_state')) {
+    if (document.cookie.includes('g_state')) {
+      console.log('Google One Tap cookie found');
       return;
     }
+
     if (!isLoading && !isSignedIn) {
       const { google } = window as any;
       if (google) {
@@ -24,30 +26,36 @@ const useOneTapSignin = (opt?: OneTapSigninOptions & Pick<SignInOptions, 'redire
           cancel_on_tap_outside: false,
           callback: async (response: any) => {
             setIsLoading(true);
+            console.log('One Tap response received:', response);
 
-            // Here we call our Provider with the token provided by google
             await signIn('googleonetap', {
               credential: response.credential,
               redirect: true,
               ...opt,
             });
+
             setIsLoading(false);
           },
           prompt_parent_id: parentContainerId,
-          style: 'position: absolute; top: 100px; right: 30px;width: 0; height: 0; z-index: 1001;',
         });
 
-        // Here we just console.log some error situations and reason why the google one tap
-        // is not displayed. You may want to handle it depending on yuor application
         google.accounts.id.prompt((notification: any) => {
+          console.log('One Tap prompt notification:', notification);
+
           if (notification.isNotDisplayed()) {
-            console.log(notification.getNotDisplayedReason());
+            console.log('One Tap not displayed:', notification.getNotDisplayedReason());
           } else if (notification.isSkippedMoment()) {
-            console.log(notification.getSkippedReason());
+            console.log('One Tap skipped:', notification.getSkippedReason());
           } else if (notification.isDismissedMoment()) {
-            console.log(notification.getDismissedReason());
+            console.log('One Tap dismissed:', notification.getDismissedReason());
+            if (notification.getDismissedReason() === 'credential_returned') {
+              console.log('One Tap sign-in dismissed');
+              setIsLoading(false);
+            }
           }
         });
+      } else {
+        console.log('Google object not found');
       }
     }
   }, [isLoading, isSignedIn, opt, parentContainerId, status]);
