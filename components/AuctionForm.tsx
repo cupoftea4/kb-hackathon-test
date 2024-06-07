@@ -55,7 +55,7 @@ const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | 
   let method = 'POST';
   let url = `${process.env.NEXT_PUBLIC_API_URL}/auction`;
 
-  if(isEditing) {
+  if (isEditing) {
     method = 'PUT';
     url += `/${id}`;
   }
@@ -79,8 +79,8 @@ const createAuction = async (data: z.infer<typeof schema>, isEditing: boolean | 
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ 
-      ...requestBody, 
+    body: JSON.stringify({
+      ...requestBody,
       // cursed
       auth_token: getCookie('auth_token')
     }),
@@ -133,6 +133,8 @@ type OwnProps = {
 
 const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
 
+  const [isLoading, setIsLoading] = useState(false);
+
   console.log(categories, auctionData, isEditing);
 
   const router = useRouter();
@@ -142,7 +144,7 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
 
   const [image, setImage] = useState<string | null>(null);
 
-  if(isEditing && auctionData?.product.pictureUrl) {
+  if (isEditing && auctionData?.product.pictureUrl) {
     setImage(auctionData.product.pictureUrl);
   }
 
@@ -166,8 +168,9 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    setIsLoading(true);
     const response = await createAuction(data, isEditing, id);
-    const jsonResponse = await response?.json(); 
+    const jsonResponse = await response?.json();
     if (response?.ok) {
       isEditing ? toast.success('Auction updated') : toast.success('Auction created');
       router.push(`/auctions/${jsonResponse._id}`);
@@ -195,7 +198,7 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="file" {...field} className='bg-backgroundOverlay h-52 w-full' onChange={handleFileChange}/>
+                    <Input type="file" {...field} className='bg-backgroundOverlay h-52 w-full' onChange={handleFileChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -429,7 +432,8 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
               )}
             />
             <div className='pt-3 pb-5 flex justify-center items-center'>
-              <Button type="submit" className='w-full' > {isEditing ? 'Update' : 'Create'} Auction </Button>
+              <Button type="submit" className='w-full' disabled={isLoading}> {isEditing ? 'Update' : 'Create'} Auction </Button>
+              {isLoading && <div className='ml-2 h-4 w-4 animate-spin' />}
             </div>
           </div>
         </div>

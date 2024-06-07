@@ -10,6 +10,7 @@ import HomeTop from './HomeTop';
 import SessionWrapper from './SessionWrapper';
 import { useDebouncedCallback } from 'use-debounce';
 import { Skeleton } from './ui/skeleton';
+import Link from 'next/link';
 
 type OwnProps = {
   initAuctions: Auction[]
@@ -102,6 +103,9 @@ export default function AuctionsFilterer({ initAuctions, categories }: OwnProps)
           </div>
         )}
       </div>
+        <Link href="/auctions/create" className="fixed sm:bottom-4 bottom-0 sm:right-4 sm:m-auto px-10 w-full sm:w-auto">
+          <Button className=" w-full sm:w-auto sm:h-auto h-16">Create Auction</Button>
+        </Link>
     </>
   );
 }
