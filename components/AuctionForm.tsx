@@ -67,8 +67,8 @@ const createAuction = async (data: any, isEditing: boolean | undefined, id: stri
 };
 
 const schema = z.object({
-  name: z.string().min(5, {
-    message: 'Title must be at least 5 characters long',
+  name: z.string().min(3, {
+    message: 'Title must be at least 3 characters long',
   }).trim(),
 
   description: z.string().trim(),
@@ -209,9 +209,9 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input 
-                      type="file" 
-                      onChange={handleFileChange} 
+                    <Input
+                      type="file"
+                      onChange={handleFileChange}
                       className={`bg-backgroundOverlay h-52 w-full absolute top-0 left-0 opacity-0 ${image ? 'cursor-pointer' : ''}`}
                     />
                   </FormControl>
@@ -447,8 +447,24 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
               )}
             />
             <div className='pt-3 pb-5 flex justify-center items-center'>
-              <Button type="submit" className='w-full' disabled={isLoading}> {isEditing ? 'Update' : 'Create'} Auction </Button>
-              {isLoading && <div className='ml-2 h-4 w-4 animate-spin' />}
+              <Button type="submit" className='w-full' disabled={isLoading}>
+                {isLoading ?
+                  <div
+                    className='w-[19rem]'
+                  >
+                    <div
+                      className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+                      role="status">
+                      <span
+                        className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                      >Loading...</span>
+                    </div>
+                  </div>
+                  : <>
+                    {isEditing ? 'Update' : 'Create'} Auction
+                  </>
+                }
+              </Button>
             </div>
           </div>
         </div>

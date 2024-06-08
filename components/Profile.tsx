@@ -1,7 +1,8 @@
 'use client';
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image"
 import { Skeleton } from './ui/skeleton';
+import { Button } from './ui/button';
 
 const Profile = () => {
   const { data } = useSession();
@@ -13,13 +14,21 @@ const Profile = () => {
             <Image
               src={data?.user?.image || '/default-avatar.png'}
               alt={data?.user?.name! || 'default'}
-              width={80}
-              height={80}
+              width={100}
+              height={100}
               className='rounded-full self-center'
             />
             <div className="flex flex-col gap-2 justify-center">
               <h1 className="font-bold sm:text-2xl text-xl">{data?.user?.name}</h1>
               <p className="font-medium sm:text-lg text-base">{data?.user?.email}</p>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                Sign out
+              </Button>
             </div>
           </>
         )}
