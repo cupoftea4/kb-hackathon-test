@@ -11,7 +11,9 @@ type OwnProps = {
 const Auctions = ({ auctions, myAuctions, className }: OwnProps) => {
   return (
     <div className={cn("flex flex-col gap-4 flex-1 flex-wrap sm:flex-row", className)}>
-      {auctions.map((auction) => (
+      {auctions
+        .sort((a, b) => new Date(b.updatedAt ?? 0).getTime() - new Date(a.updatedAt ?? 0).getTime())
+        .map((auction) => (
         <AuctionCard auction={auction} key={auction._id} editable={myAuctions} />
       ))}
     </div>
