@@ -14,7 +14,6 @@ const AuctionPage = async () => {
   const id = pathname!.split('/')[2];
 
   const auction = await fetchJson<AuctionWithBids>(`auction/${id}`);
-  console.log(auction);
 
   return (
     <div className='flex flex-col gap-4'>

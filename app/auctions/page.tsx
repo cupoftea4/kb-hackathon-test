@@ -4,7 +4,6 @@ import AuctionsFilterer from "@/components/AuctionsFilterer";
 const AuctionsPage = async () => {
   const auctions = await fetchActions();
   const categories = await fetchAuctionCategories();
-  console.log(categories);
 
   return (
     <main>
