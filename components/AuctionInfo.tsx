@@ -25,11 +25,9 @@ type OwnProps = {
 
 const AuctionInfo = ({ auction, socketConnected }: OwnProps) => {
   const [lastPrice, setLastPrice] = useState<number>(
-    auction.bids.sort((a, b) => {
-      return (
-        new Date(b.createdAt).getSeconds() - new Date(a.createdAt).getSeconds()
-      );
-    })[0]?.amount ?? auction.minPrice
+    auction.bids.sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )[0]?.amount ?? auction.minPrice
   );
 
   const [bid, setBid] = useState<number>(lastPrice + 100);
@@ -86,7 +84,7 @@ const AuctionInfo = ({ auction, socketConnected }: OwnProps) => {
         <div>
           <h1 className="text-3xl font-bold mb-2">{auction.product.name}</h1>
           <p className="text-xl">Category: {auction.product.category.name}</p>
-          <p className="text-xl">Current price: {lastPrice}</p>
+          <p className="text-xl">Current price: {lastPrice} {auction.currency}</p>
           <p className="text-xl flex items-center gap-2">
             Ends at: <span className={cn(
               closeDate === "closed" && "bg-red-500 text-white px-2 py-1 rounded-xl flex max-w-max",

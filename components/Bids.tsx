@@ -22,14 +22,16 @@ const Bids = ({ auction, socketConnected }: OwnProps) => {
   }, [socketConnected]);
   
   return (
-    <div className='bg-backgroundOverlay rounded-md p-2'>
+    <div className='bg-backgroundOverlay rounded-md p-2 m-2'>
       <h1 className='text-3xl font-bold'>Bids</h1>
       <ul className='flex h-48 m-h-48 overflow-auto flex-col-reverse'>
-        {bids.map(bid => (
-          <li key={bid._id} className='p-1'>
-            <p><span className='text-accent'>{bid.createdBy.name}</span>: {bid.amount}</p>
-          </li>
-        ))}
+        {bids
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .map(bid => (
+            <li key={bid._id} className='p-1'>
+              <p><span className='text-accent'>{bid.createdBy.name}</span>: {bid.amount}</p>
+            </li>
+          ))}
       </ul>
     </div>
   )
