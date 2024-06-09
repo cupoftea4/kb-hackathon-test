@@ -113,21 +113,14 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
   const pathname = usePathname();
   const id = pathname!.split('/')[2];
 
-  const [image, setImage] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(auctionData?.picture?.url ?? null);
   const [file, setFile] = useState<File | null>(null);
-
-  if (isEditing && auctionData?.product.pictureUrl && !image) {
-    setImage(auctionData.product.pictureUrl);
-  }
 
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      const localUrl = URL.createObjectURL(file);
+      setImageUrl(localUrl);
       setFile(file);
     }
   };
@@ -140,6 +133,9 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
       minPrice: isEditing ? auctionData?.minPrice?.toString() : '0',
       minBidStep: isEditing ? auctionData?.minBidStep?.toString() : '1',
       currency: isEditing ? auctionData?.currency : 'UAH',
+      category: isEditing ? auctionData?.product.category._id : '',
+      closeDate: isEditing ? new Date(auctionData?.closeDate ?? '') : new Date(),
+      charity: isEditing ? auctionData?.charity : false,
     },
   });
 
@@ -185,10 +181,10 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='flex sm:flex-row flex-col px-5 gap-4'>
           <div className='sm:w-52 h-52 w-full rounded-lg bg-backgroundOverlay relative'>
-            {image && (
+            {imageUrl && (
               <>
                 <Image
-                  src={image}
+                  src={imageUrl}
                   alt="Uploaded image"
                   className='object-cover w-full h-full'
                   width={208}
@@ -199,7 +195,7 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
                 </div>
               </>
             )}
-            {!image && (
+            {!imageUrl && (
               <div className="absolute inset-0 top-auto py-1 rounded-lg flex items-center justify-center bg-black bg-opacity-50 text-white">
                 <span>Upload Image</span>
               </div>
@@ -212,7 +208,7 @@ const AuctionForm = ({ isEditing, auctionData, categories }: OwnProps) => {
                     <Input
                       type="file"
                       onChange={handleFileChange}
-                      className={`bg-backgroundOverlay h-52 w-full absolute top-0 left-0 opacity-0 ${image ? 'cursor-pointer' : ''}`}
+                      className={`bg-backgroundOverlay h-52 w-full absolute top-0 left-0 opacity-0 ${imageUrl ? 'cursor-pointer' : ''}`}
                     />
                   </FormControl>
                   <FormMessage />

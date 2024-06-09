@@ -36,12 +36,12 @@ const Profile = () => {
           <>
             <Skeleton className="h-[80px] w-[80px] rounded-full" />
             <div className="flex flex-col gap-2 justify-center">
-              <h1 className="font-bold sm:text-2xl text-xl">
+              <div className="font-bold sm:text-2xl text-xl">
                 <Skeleton className="h-[20px] w-[200px]" />
-              </h1>
-              <p className="font-medium sm:text-lg text-base">
+              </div>
+              <div className="font-medium sm:text-lg text-base">
                 <Skeleton className="h-[20px] w-[200px]" />
-              </p>
+              </div>
             </div>
           </>
         )}
