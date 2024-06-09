@@ -6,6 +6,7 @@ import { AuctionSearchParams } from "@/types/general";
 import { useSearchParams } from "next/navigation";
 
 type OwnProps = {
+  selectedCategories: string[];
   onFilterChange: <T extends keyof AuctionSearchParams>(
     name: T,
     value: AuctionSearchParams[T]
@@ -13,11 +14,11 @@ type OwnProps = {
   categories: AuctionCategory[];
 };
 
-const Filters = ({ onFilterChange, categories }: OwnProps) => {
+const Filters = ({ onFilterChange, categories, selectedCategories: initSelectedCategories = [] }: OwnProps) => {
   const searchParams = useSearchParams();
   const [charity, setCharity] = React.useState<"true" | "">("");
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>(
-    []
+    initSelectedCategories
   );
 
   React.useEffect(() => {

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import AuctionCard from "./AuctionCard"
+import Image from "next/image"
 
 type OwnProps = {
   auctions: Auction[]
@@ -16,6 +17,12 @@ const Auctions = ({ auctions, myAuctions, className }: OwnProps) => {
         .map((auction) => (
         <AuctionCard auction={auction} key={auction._id} editable={myAuctions} />
       ))}
+      {auctions.length === 0 && 
+        <div className="flex flex-col flex-1 items-center gap-2">
+          <Image src="/no-auctions.png" width={1920} height={1080} alt="No auctions found" />
+          <p className="text-center text-2xl font-semibold">No auctions found</p>
+        </div>
+      }
     </div>
   )
 }

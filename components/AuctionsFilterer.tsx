@@ -26,12 +26,14 @@ const fetchAuctions = (params: ReadonlyURLSearchParams) => {
 export default function AuctionsFilterer({ initAuctions, categories }: OwnProps) {
   const [auctions, setAuctions] = useState(initAuctions);
   const [filters, setFilters] = useState<AuctionSearchParams>({});
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
   const firstRender = useRef(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchFilteredAuctions = async () => {
       const auctions = await fetchAuctions(searchParams);
       setAuctions(auctions);
@@ -41,7 +43,7 @@ export default function AuctionsFilterer({ initAuctions, categories }: OwnProps)
       firstRender.current = false;
       return;
     }
-    fetchFilteredAuctions();
+    fetchFilteredAuctions().finally(() => setLoading(false));
   }, [searchParams]);
 
   const applyFilters = (filters: AuctionSearchParams) => {
@@ -88,19 +90,24 @@ export default function AuctionsFilterer({ initAuctions, categories }: OwnProps)
       <div className="flex flex-col max-w-screen-lg m-auto sm:flex-row-reverse px-4 gap-4">
         <div className="flex flex-col gap-2">
           <Filters
+            selectedCategories={filters.category?.split(",") ?? []}
             onFilterChange={onFilterChange}
             categories={categories}
           />
           <Button className="w-full" onClick={() => applyFilters(filters)}>Apply filters</Button>
+          <Button variant={'outline'} className="w-full" onClick={() => {
+            setFilters({});
+            applyFilters({})
+          }}>Clear filters</Button>
         </div>
-        {auctions.length > 0 ? (
-          <Auctions auctions={auctions} />
-        ) : (
+        {loading ? (
           <div className="grid xl:grid-cols-2 gap-4">
             <Skeleton className="h-[200px] w-[100%]" />
             <Skeleton className="h-[200px] w-[100%]" />
             <Skeleton className="h-[200px] w-[100%]" />
           </div>
+        ) : (
+          <Auctions auctions={auctions} />
         )}
       </div>
         <Link href="/auctions/create" className="fixed sm:bottom-4 bottom-0 sm:right-4 sm:m-auto px-10 w-full sm:w-auto">
