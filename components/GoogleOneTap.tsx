@@ -5,7 +5,7 @@ const ONE_TAP_ID = 'oneTap';
 
 const GoogleOneTap = () => {
   useOneTapSignin({
-    redirect: false,
+    redirect: true,
     parentContainerId: ONE_TAP_ID,
   });
 
