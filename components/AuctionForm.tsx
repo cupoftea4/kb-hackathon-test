@@ -40,7 +40,6 @@ const createAuction = async (data: any, isEditing: boolean | undefined, id: stri
       name: data.name,
       description: data.description,
       category: data.category,
-      picture: data.picture,
     },
     minPrice: parseFloat(data.minPrice),
     minBidStep: parseFloat(data.minBidStep),
